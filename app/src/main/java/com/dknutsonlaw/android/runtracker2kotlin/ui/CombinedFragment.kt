@@ -101,7 +101,7 @@ class CombinedFragment : Fragment() {
     private val mLocationListCursorCallbacks = LocationListCursorCallbacks()
     private var mLocationCursor: Cursor? = null
     private var mGoogleMap: GoogleMap? = null
-    private var mMapView: MapView? = null
+    private lateinit var mMapView: MapView
     private var mPolyline: Polyline? = null
     //Data structures needed to select and receive local broadcast messages sent by the Intent
     //Service
@@ -363,8 +363,8 @@ class CombinedFragment : Fragment() {
 
         //Now initialize the map
         mMapView = v.findViewById(R.id.mapViewContainer)
-        mMapView!!.onCreate(savedInstanceState)
-        mMapView!!.onResume() //needed to get map to display immediately
+        mMapView.onCreate(savedInstanceState)
+        mMapView.onResume() //needed to get map to display immediately
 
         try {
             MapsInitializer.initialize(activity!!.applicationContext)
@@ -372,7 +372,7 @@ class CombinedFragment : Fragment() {
             e.printStackTrace()
         }
 
-        mMapView!!.getMapAsync { googleMap ->
+        mMapView.getMapAsync { googleMap ->
             //Stash a reference to the GoogleMap
             mGoogleMap = googleMap
             if (mGoogleMap != null) {
@@ -924,7 +924,7 @@ class CombinedFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         restartLoaders()
-        mMapView!!.onResume()
+        mMapView.onResume()
         LocalBroadcastManager.getInstance(context!!).registerReceiver(mResultsReceiver!!, mResultsFilter!!)
         mPrepared = false
     }
@@ -942,18 +942,18 @@ class CombinedFragment : Fragment() {
     }
 
     override fun onPause() {
-        mMapView!!.onPause()
+        mMapView.onPause()
         LocalBroadcastManager.getInstance(context!!).unregisterReceiver(mResultsReceiver!!)
         super.onPause()
     }
 
     override fun onDestroy() {
-        mMapView!!.onDestroy()
+        mMapView.onDestroy()
         super.onDestroy()
     }
 
     override fun onLowMemory() {
-        mMapView!!.onLowMemory()
+        mMapView.onLowMemory()
         super.onLowMemory()
     }
 
