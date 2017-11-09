@@ -28,6 +28,7 @@ class RunTracker2Kotlin : Application() {
     companion object {
 
         private val TAG = RunTracker2Kotlin::class.java.simpleName
+        @SuppressLint("StaticFieldLeak") // it's not a leak if it's the app context
         @get:Synchronized
         var instance: Context? = null
             private set
