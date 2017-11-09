@@ -1,4 +1,4 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 /*
   Created by dck on 9/6/15. An adapter that feeds fragments to a ViewPager based upon data taken

@@ -1,4 +1,4 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 /*
   Adapted by dck on 10/28/15. An adapter that extends the RecyclerView.Adapter for use with a

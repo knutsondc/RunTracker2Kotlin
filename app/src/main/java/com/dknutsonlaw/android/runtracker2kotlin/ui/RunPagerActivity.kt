@@ -1,4 +1,4 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -30,6 +30,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.dknutsonlaw.android.runtracker2kotlin.BackgroundLocationService
+import com.dknutsonlaw.android.runtracker2kotlin.Constants
+import com.dknutsonlaw.android.runtracker2kotlin.R
+import com.dknutsonlaw.android.runtracker2kotlin.Run
+import com.dknutsonlaw.android.runtracker2kotlin.RunDatabaseHelper
+import com.dknutsonlaw.android.runtracker2kotlin.RunListCursorLoader
+import com.dknutsonlaw.android.runtracker2kotlin.RunManager
+import com.dknutsonlaw.android.runtracker2kotlin.RunTracker2Kotlin
 
 /**
  * Created by dck on 9/7/15. Display all the Runs we've recorded in a ViewPager that displays a
@@ -170,15 +178,15 @@ class RunPagerActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curs
         var cursor: Cursor? = null
 
         when (mSortOrder) {
-            Constants.SORT_BY_DATE_ASC -> cursor = contentResolver.query(
+            Constants.SORT_BY_DATE_ASC      -> cursor = contentResolver.query(
                     Constants.URI_TABLE_RUN, null, null, null,
                     Constants.SORT_BY_DATE_ASC.toString()
             )
-            Constants.SORT_BY_DATE_DESC -> cursor = contentResolver.query(
+            Constants.SORT_BY_DATE_DESC     -> cursor = contentResolver.query(
                     Constants.URI_TABLE_RUN, null, null, null,
                     Constants.SORT_BY_DATE_DESC.toString()
             )
-            Constants.SORT_BY_DISTANCE_ASC -> cursor = contentResolver.query(
+            Constants.SORT_BY_DISTANCE_ASC  -> cursor = contentResolver.query(
                     Constants.URI_TABLE_RUN, null, null, null,
                     Constants.SORT_BY_DISTANCE_ASC.toString()
             )
@@ -186,7 +194,7 @@ class RunPagerActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curs
                     Constants.URI_TABLE_RUN, null, null, null,
                     Constants.SORT_BY_DISTANCE_DESC.toString()
             )
-            Constants.SORT_BY_DURATION_ASC -> cursor = contentResolver.query(
+            Constants.SORT_BY_DURATION_ASC  -> cursor = contentResolver.query(
                     Constants.URI_TABLE_RUN, null, null, null,
                     Constants.SORT_BY_DURATION_ASC.toString()
             )
@@ -194,13 +202,13 @@ class RunPagerActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curs
                     Constants.URI_TABLE_RUN, null, null, null,
                     Constants.SORT_BY_DURATION_DESC.toString()
             )
-            Constants.SORT_NO_RUNS -> {
+            Constants.SORT_NO_RUNS          -> {
                 cursor = contentResolver.query(
                         Constants.URI_TABLE_RUN, null, null, null, null
                 )
                 Log.i(TAG, "Invalid sort order - how'd you get here!?!")
             }
-            else -> Log.i(TAG, "Invalid sort order - how'd you get here!?!")
+            else                            -> Log.i(TAG, "Invalid sort order - how'd you get here!?!")
         }
         mAdapter = RunCursorFragmentStatePagerAdapter(this,
                 supportFragmentManager,
@@ -227,19 +235,19 @@ class RunPagerActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curs
         val r = resources
         val subtitle: String?
         subtitle = when (mSortOrder) {
-            Constants.SORT_BY_DATE_ASC -> r.getQuantityString(R.plurals.viewpager_subtitle_date_asc,
+            Constants.SORT_BY_DATE_ASC      -> r.getQuantityString(R.plurals.viewpager_subtitle_date_asc,
                     mAdapter!!.count, mViewPager!!.currentItem + 1, mAdapter!!.count)
-            Constants.SORT_BY_DATE_DESC -> r.getQuantityString(R.plurals.viewpager_subtitle_date_desc,
+            Constants.SORT_BY_DATE_DESC     -> r.getQuantityString(R.plurals.viewpager_subtitle_date_desc,
                     mAdapter!!.count, mViewPager!!.currentItem + 1, mAdapter!!.count)
-            Constants.SORT_BY_DISTANCE_ASC -> r.getQuantityString(R.plurals.viewpager_subtitle_distance_asc,
+            Constants.SORT_BY_DISTANCE_ASC  -> r.getQuantityString(R.plurals.viewpager_subtitle_distance_asc,
                     mAdapter!!.count, mViewPager!!.currentItem + 1, mAdapter!!.count)
             Constants.SORT_BY_DISTANCE_DESC -> r.getQuantityString(R.plurals.viewpager_subtitle_distance_desc,
                     mAdapter!!.count, mViewPager!!.currentItem + 1, mAdapter!!.count)
-            Constants.SORT_BY_DURATION_ASC -> r.getQuantityString(R.plurals.viewpager_subtitle_duration_asc,
+            Constants.SORT_BY_DURATION_ASC  -> r.getQuantityString(R.plurals.viewpager_subtitle_duration_asc,
                     mAdapter!!.count, mViewPager!!.currentItem + 1, mAdapter!!.count)
             Constants.SORT_BY_DURATION_DESC -> r.getQuantityString(R.plurals.viewpager_subtitle_duration_desc,
                     mAdapter!!.count, mViewPager!!.currentItem + 1, mAdapter!!.count)
-            else -> r.getString(R.string.goof_up)
+            else                            -> r.getString(R.string.goof_up)
         }
         supportActionBar!!.subtitle = subtitle
     }
@@ -309,7 +317,7 @@ class RunPagerActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curs
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.run_map_pager_menu_item_new_run -> {
+            R.id.run_map_pager_menu_item_new_run               -> {
                 /*Don't need to tell the Adapter its getting an update because we're recreating the
                  *Adapter shortly. First, tell the ViewPager's adapter that its content is receiving
                  *an update.
@@ -322,7 +330,7 @@ class RunPagerActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curs
                  */
                 return true
             }
-            R.id.menu_item_map_pager_delete_run -> {
+            R.id.menu_item_map_pager_delete_run                -> {
                 /*Bring up a confirmation dialog to allow the user to change his mind about deletion.
                  *We pass along this Activity's identity and that only a single Run is to be deleted
                  *so the dialog message will be accurate.
@@ -338,31 +346,31 @@ class RunPagerActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curs
         /*To change the sort order, set mSortOrder, store it to SharedPrefs, reinitialize the
              *adapter and subtitle and restart the RunListLoader.
              */
-            R.id.run_map_pager_menu_item_sort_by_date_asc -> mSortOrder = Constants.SORT_BY_DATE_ASC
-            R.id.run_map_pager_menu_item_sort_by_date_desc -> mSortOrder = Constants.SORT_BY_DATE_DESC
-            R.id.run_map_pager_menu_item_sort_by_distance_asc -> mSortOrder = Constants.SORT_BY_DISTANCE_ASC
+            R.id.run_map_pager_menu_item_sort_by_date_asc      -> mSortOrder = Constants.SORT_BY_DATE_ASC
+            R.id.run_map_pager_menu_item_sort_by_date_desc     -> mSortOrder = Constants.SORT_BY_DATE_DESC
+            R.id.run_map_pager_menu_item_sort_by_distance_asc  -> mSortOrder = Constants.SORT_BY_DISTANCE_ASC
             R.id.run_map_pager_menu_item_sort_by_distance_desc -> mSortOrder = Constants.SORT_BY_DISTANCE_DESC
-            R.id.run_map_pager_menu_item_sort_by_duration_asc -> mSortOrder = Constants.SORT_BY_DURATION_ASC
+            R.id.run_map_pager_menu_item_sort_by_duration_asc  -> mSortOrder = Constants.SORT_BY_DURATION_ASC
             R.id.run_map_pager_menu_item_sort_by_duration_desc -> mSortOrder = Constants.SORT_BY_DURATION_DESC
-            R.id.show_entire_route_menu_item ->
+            R.id.show_entire_route_menu_item                   ->
                 //This is implemented in the CombinedFragment
                 return false
-            R.id.track_end_point_menu_item ->
+            R.id.track_end_point_menu_item                     ->
                 //This is implemented in the CombinedFragment
                 return false
-            R.id.track_start_point_menu_item ->
+            R.id.track_start_point_menu_item                   ->
                 //This is implemented in the CombinedFragment
                 return false
-            R.id.tracking_off_menu_item ->
+            R.id.tracking_off_menu_item                        ->
                 //This is implemented in the CombinedFragment
                 return false
-            R.id.run_map_pager_activity_units ->
+            R.id.run_map_pager_activity_units                  ->
                 //This is implemented in the CombinedFragment
                 return false
-            R.id.run_map_pager_activity_scroll ->
+            R.id.run_map_pager_activity_scroll                 ->
                 //This is implemented in the CombinedFragment
                 return false
-            else -> {
+            else                                               -> {
                 super.onOptionsItemSelected(item)
                 return true
             }
@@ -513,7 +521,7 @@ class RunPagerActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curs
                         setViewPager(mAdapter!!.cursor, mRunId)
                     }
                 }
-                Constants.ACTION_DELETE_RUN -> {
+                Constants.ACTION_DELETE_RUN  -> {
                     Log.i(TAG, "In ResultsReceiver for ACTION_DELETE_RUN in RunPagerActivity")
                     //Display a dialog displaying the results of the deletion operation.
                     //String resultsString = intent.getStringExtra(Constants.EXTENDED_RESULTS_DATA);
@@ -588,7 +596,7 @@ class RunPagerActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Curs
                     //We've finished with deletions, so the  View's update can be finished.
                     mAdapter!!.finishUpdate(mViewPager!!)
                 }
-                else ->
+                else                         ->
                     /*Shouldn't ever get here - intent filter limits us to SEND_RESULT_ACTION
                      *and ACTION_DELETE_RUN.
                      */

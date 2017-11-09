@@ -36,7 +36,7 @@
             tools:replace="android:value"/>
 
         <activity
-            android:name=".RunRecyclerListActivity"
+            android:name=".ui.RunRecyclerListActivity"
             android:label="RunTracker2Kotlin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -45,15 +45,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RunPagerActivity"
+            android:name=".ui.RunPagerActivity"
             android:label="RunTracker2Kotlin"
-            android:parentActivityName=".RunRecyclerListActivity">
+            android:parentActivityName=".ui.RunRecyclerListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.dknutsonlaw.android.runtracker2kotlin.RunRecyclerListActivity"/>
+                android:value="com.dknutsonlaw.android.runtracker2kotlin.ui.RunRecyclerListActivity"/>
         </activity>
         <activity
-            android:name=".DialogActivity"
+            android:name=".ui.DialogActivity"
             android:label="RunTracker2Kotlin"
             android:theme="@android:style/Theme.Dialog">
         </activity>
@@ -83,7 +83,7 @@
             android:exported="false">
         </service>
         <activity
-            android:name=".HeadlessActivity"
+            android:name=".ui.HeadlessActivity"
             android:label="@string/title_activity_headless">
         </activity>
         <provider android:authorities="com.dknutsonlaw.android.runtracker2kotlin"

@@ -27,6 +27,7 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import android.widget.Toast
+import com.dknutsonlaw.android.runtracker2kotlin.ui.RunPagerActivity
 
 //import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ApiException

@@ -1,4 +1,4 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 /*
  *This Activity has no visible UI of its own. Its exclusive use is to provide its onActivityResult()
@@ -10,6 +10,9 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import com.dknutsonlaw.android.runtracker2kotlin.Constants
+import com.dknutsonlaw.android.runtracker2kotlin.RunManager
+import com.dknutsonlaw.android.runtracker2kotlin.RunTracker2Kotlin
 
 class HeadlessActivity : AppCompatActivity() {
 

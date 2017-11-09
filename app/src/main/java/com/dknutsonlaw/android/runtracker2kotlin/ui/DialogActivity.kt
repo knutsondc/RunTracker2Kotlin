@@ -1,4 +1,4 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
+import com.dknutsonlaw.android.runtracker2kotlin.Constants
+import com.dknutsonlaw.android.runtracker2kotlin.R
 
 class DialogActivity : AppCompatActivity() {
 

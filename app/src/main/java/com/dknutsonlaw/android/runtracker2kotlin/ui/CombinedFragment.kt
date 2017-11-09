@@ -1,4 +1,4 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 import android.animation.ValueAnimator
 import android.content.BroadcastReceiver
@@ -32,7 +32,16 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.dknutsonlaw.android.runtracker2kotlin.BackgroundLocationService
+import com.dknutsonlaw.android.runtracker2kotlin.Constants
+import com.dknutsonlaw.android.runtracker2kotlin.MyLocationListCursorLoader
+import com.dknutsonlaw.android.runtracker2kotlin.R
+import com.dknutsonlaw.android.runtracker2kotlin.Run
+import com.dknutsonlaw.android.runtracker2kotlin.RunCursorLoader
+import com.dknutsonlaw.android.runtracker2kotlin.RunDatabaseHelper
 import com.dknutsonlaw.android.runtracker2kotlin.RunDatabaseHelper.Companion.getLocation
+import com.dknutsonlaw.android.runtracker2kotlin.RunManager
+import com.dknutsonlaw.android.runtracker2kotlin.RunTracker2Kotlin
 
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -545,7 +554,7 @@ class CombinedFragment : Fragment() {
     *of always starting with the default SHOW_ENTIRE_ROUTE.*/
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
-            R.id.run_map_pager_activity_units -> {
+            R.id.run_map_pager_activity_units  -> {
                 //Swap distance measurement unit between imperial and metric
                 RunTracker2Kotlin.prefs!!.edit().putBoolean(Constants.MEASUREMENT_SYSTEM,
                         !RunTracker2Kotlin.prefs!!.getBoolean(Constants.MEASUREMENT_SYSTEM,
@@ -591,7 +600,7 @@ class CombinedFragment : Fragment() {
              *restarts with the last previous tracking mode still in effect, rather than going with
              *the default of SHOW_ENTIRE_ROUTE.
              */
-            R.id.show_entire_route_menu_item -> {
+            R.id.show_entire_route_menu_item   -> {
                 mViewMode = Constants.SHOW_ENTIRE_ROUTE
                 if (RunManager.isTrackingRun(mRun)) {
                     /*Scrolling won't work with this tracking mode while the run is actually being
@@ -600,7 +609,7 @@ class CombinedFragment : Fragment() {
                     RunTracker2Kotlin.prefs!!.edit().putBoolean(Constants.SCROLLABLE, false).apply()
                 }
             }
-            R.id.track_end_point_menu_item -> {
+            R.id.track_end_point_menu_item     -> {
                 mViewMode = Constants.FOLLOW_END_POINT
                 if (RunManager.isTrackingRun(mRun)) {
                     /*Scrolling won't work with this tracking mode while the run is actually being
@@ -609,7 +618,7 @@ class CombinedFragment : Fragment() {
                     RunTracker2Kotlin.prefs!!.edit().putBoolean(Constants.SCROLLABLE, false).apply()
                 }
             }
-            R.id.track_start_point_menu_item -> {
+            R.id.track_start_point_menu_item   -> {
                 mViewMode = Constants.FOLLOW_STARTING_POINT
                 if (RunManager.isTrackingRun(mRun)) {
                     /*Scrolling won't work with this tracking mode while the run is actually being
@@ -618,14 +627,14 @@ class CombinedFragment : Fragment() {
                     RunTracker2Kotlin.prefs!!.edit().putBoolean(Constants.SCROLLABLE, false).apply()
                 }
             }
-            R.id.tracking_off_menu_item -> {
+            R.id.tracking_off_menu_item        -> {
                 mViewMode = Constants.NO_UPDATES
                 /*Scrolling will work with this tracking mode, so make sure we enable the scrolling
                  *menuItem upon next update of UI.
                  */
                 RunTracker2Kotlin.prefs!!.edit().putBoolean(Constants.SCROLLABLE, true).apply()
             }
-            else -> return super.onOptionsItemSelected(item)
+            else                               -> return super.onOptionsItemSelected(item)
         }
         /*Store and implement the new tracking mode and tell all the other open CombinedFragments to
          *switch to this mode.
@@ -872,7 +881,7 @@ class CombinedFragment : Fragment() {
         }
         val cameraUpdate: CameraUpdate?
         when (mode) {
-            Constants.SHOW_ENTIRE_ROUTE -> {
+            Constants.SHOW_ENTIRE_ROUTE     -> {
                 /*To show the entire route, we supply the newly-updated mBounds containing all the
                 *LatLngs in the route to the relevant CameraUpdateFactory method. The map has
                 *already been created, so we don't need to tell the CameraUpdate about the size of
@@ -880,7 +889,7 @@ class CombinedFragment : Fragment() {
                 */
                 cameraUpdate = CameraUpdateFactory.newLatLngBounds(mBounds, mPadding)
             }
-            Constants.FOLLOW_END_POINT -> {
+            Constants.FOLLOW_END_POINT      -> {
                 /*To track the end point of the Run, move the camera to the new end point at the
                  *zoom level last used for this mode or FOLLOW_START_POINT mode.
                  */
@@ -892,13 +901,13 @@ class CombinedFragment : Fragment() {
                  */
                 cameraUpdate = CameraUpdateFactory.newLatLngZoom(mPoints!![0], mZoom)
             }
-            Constants.NO_UPDATES -> {
+            Constants.NO_UPDATES            -> {
                 /*To turn off tracking, return a null so that the Camera will stay where it was
                  *following the previous location update.
                  */
                 cameraUpdate = null
             }
-            else -> cameraUpdate = null
+            else                            -> cameraUpdate = null
         }
         return cameraUpdate
     }
@@ -1140,7 +1149,7 @@ class CombinedFragment : Fragment() {
         mViewMode = when (mPoints!!.size < 3) {
             true -> Constants.SHOW_ENTIRE_ROUTE
             false -> RunTracker2Kotlin.prefs!!.getInt(Constants.TRACKING_MODE,
-                                    Constants.SHOW_ENTIRE_ROUTE)
+                    Constants.SHOW_ENTIRE_ROUTE)
         }
         /*if (mPoints!!.size < 3) {
             mViewMode = Constants.SHOW_ENTIRE_ROUTE
@@ -1161,10 +1170,10 @@ class CombinedFragment : Fragment() {
          *will set that value in SharedPrefs where it will remain until the user manually zooms in.
          */
         when (mViewMode) {
-            Constants.SHOW_ENTIRE_ROUTE -> mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(mBounds, mPadding))
-            Constants.FOLLOW_END_POINT -> mGoogleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(mPoints!![mPoints!!.size - 1], mZoom))
+            Constants.SHOW_ENTIRE_ROUTE     -> mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(mBounds, mPadding))
+            Constants.FOLLOW_END_POINT      -> mGoogleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(mPoints!![mPoints!!.size - 1], mZoom))
             Constants.FOLLOW_STARTING_POINT -> mGoogleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(mPoints!![0], mZoom))
-            else -> mGoogleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(mPoints!![mPoints!!.size - 1], mZoom))
+            else                            -> mGoogleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(mPoints!![mPoints!!.size - 1], mZoom))
         }
         /*The graphic elements of the map display have now all been configured, so set the
          *mPrepared flag so that succeeding calls to onLoadFinished will merely update them as
@@ -1185,7 +1194,7 @@ class CombinedFragment : Fragment() {
         val latLng: LatLng
 
         when (mViewMode) {
-            Constants.FOLLOW_END_POINT -> {
+            Constants.FOLLOW_END_POINT      -> {
                 /*Fix the camera on the last location in the run at the zoom level that was last used
                  *for this or the FOLLOW_START_POINT view mode. Also make sure the End Marker is
                  *placed at the same location so that the End Marker stays in sync with mLastLocation..
@@ -1204,7 +1213,7 @@ class CombinedFragment : Fragment() {
                 latLng = mPoints!![0]
                 mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, mZoom), 3000, null)
             }
-            else ->
+            else                            ->
                 /*This handles both SHOW_ENTIRE_ROUTE and NO_UPDATES. Set the camera at the center
                  *of the area defined by mBounds, again leaving a buffer zone at the edges of the
                  *screen set according to screen size. The map has already been created, so we don't
@@ -1473,7 +1482,7 @@ class CombinedFragment : Fragment() {
                     updateUI()
                     return
                 }
-                Constants.SEND_RESULT_ACTION -> {
+                Constants.SEND_RESULT_ACTION   -> {
                     /*Dispatch Intents for processing based upon the value passed in the
                      *ACTION_ATTEMPTED Extras key. Data specific to each different ACTION_ATTEMPTED
                      *value is carried with the EXTENDED_RESULTS_DATA key
@@ -1481,7 +1490,7 @@ class CombinedFragment : Fragment() {
                     val actionAttempted = intent.getStringExtra(Constants.ACTION_ATTEMPTED)
                     val runId = intent.getLongExtra(Constants.ARG_RUN_ID, -1)
                     when (actionAttempted) {
-                        Constants.ACTION_UPDATE_START_DATE -> {
+                        Constants.ACTION_UPDATE_START_DATE         -> {
                             val result = intent.getIntExtra(Constants.EXTENDED_RESULTS_DATA, -1)
                             val toastTextRes: Int
                             /*The getWritableDatabase.update() method returns the number of rows
@@ -1519,7 +1528,7 @@ class CombinedFragment : Fragment() {
                             }
                             updateUI()
                         }
-                        Constants.ACTION_UPDATE_START_ADDRESS -> {
+                        Constants.ACTION_UPDATE_START_ADDRESS      -> {
                             val result = intent.getIntExtra(Constants.EXTENDED_RESULTS_DATA, -1)
                             val toastTextRes: Int
                             /*The getWritableDatabase.update() method returns the number of rows
@@ -1556,7 +1565,7 @@ class CombinedFragment : Fragment() {
                             }
                             updateUI()
                         }
-                        Constants.ACTION_UPDATE_END_ADDRESS -> {
+                        Constants.ACTION_UPDATE_END_ADDRESS        -> {
                             val result = intent.getIntExtra(Constants.EXTENDED_RESULTS_DATA, -1)
                             val toastTextRes: Int
                             /*The getWritableDatabase.update() method returns the number of rows
@@ -1591,7 +1600,7 @@ class CombinedFragment : Fragment() {
                             }
                             updateUI()
                         }
-                        Constants.ACTION_INSERT_LOCATION -> {
+                        Constants.ACTION_INSERT_LOCATION           -> {
                             /*Report any failure while inserting a new location. Successful
                              *insertions are not reported.
                              */
@@ -1618,7 +1627,7 @@ class CombinedFragment : Fragment() {
                             updateUI()
                         }
 
-                        Constants.ACTION_REFRESH_MAPS -> {
+                        Constants.ACTION_REFRESH_MAPS              -> {
                             if (runId == -1L || runId == mRunId) {
                                 Log.i(TAG, "mRunId in ACTION_REFRESH_MAPS is $mRunId; runId is $runId")
                                 Log.i(TAG, "Same or bad runId in ACTION_REFRESH_MAPS - bailing")
@@ -1636,7 +1645,7 @@ class CombinedFragment : Fragment() {
                              */
                             updateUI()
 
-                        else -> Log.i(TAG, "How'd you get here!?! Not a defined ACTION!")
+                        else                                       -> Log.i(TAG, "How'd you get here!?! Not a defined ACTION!")
                     }
                 }
             }

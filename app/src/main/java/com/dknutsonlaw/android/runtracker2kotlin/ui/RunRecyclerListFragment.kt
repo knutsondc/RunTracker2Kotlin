@@ -1,4 +1,4 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 /*
   Created by dck on 10/28/15. A Fragment to display a RecyclerView showing all the Runs recorded
@@ -47,6 +47,14 @@ import android.widget.Toast
 import com.bignerdranch.android.multiselector.ModalMultiSelectorCallback
 import com.bignerdranch.android.multiselector.MultiSelector
 import com.bignerdranch.android.multiselector.SwappingHolder
+import com.dknutsonlaw.android.runtracker2kotlin.BackgroundLocationService
+import com.dknutsonlaw.android.runtracker2kotlin.Constants
+import com.dknutsonlaw.android.runtracker2kotlin.R
+import com.dknutsonlaw.android.runtracker2kotlin.Run
+import com.dknutsonlaw.android.runtracker2kotlin.RunDatabaseHelper
+import com.dknutsonlaw.android.runtracker2kotlin.RunListCursorLoader
+import com.dknutsonlaw.android.runtracker2kotlin.RunManager
+import com.dknutsonlaw.android.runtracker2kotlin.RunTracker2Kotlin
 //import com.google.android.gms.common.ConnectionResult;
 //import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -208,19 +216,19 @@ class RunRecyclerListFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor
             subtitle = r.getString(R.string.no_runs_recorded)
         } else {
             when (mSortOrder) {
-                Constants.SORT_BY_DATE_ASC -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_date_asc,
+                Constants.SORT_BY_DATE_ASC      -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_date_asc,
                         mAdapter!!.itemCount, mAdapter!!.itemCount)
-                Constants.SORT_BY_DATE_DESC -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_date_desc,
+                Constants.SORT_BY_DATE_DESC     -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_date_desc,
                         mAdapter!!.itemCount, mAdapter!!.itemCount)
-                Constants.SORT_BY_DISTANCE_ASC -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_distance_asc,
+                Constants.SORT_BY_DISTANCE_ASC  -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_distance_asc,
                         mAdapter!!.itemCount, mAdapter!!.itemCount)
                 Constants.SORT_BY_DISTANCE_DESC -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_distance_desc,
                         mAdapter!!.itemCount, mAdapter!!.itemCount)
-                Constants.SORT_BY_DURATION_ASC -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_duration_asc,
+                Constants.SORT_BY_DURATION_ASC  -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_duration_asc,
                         mAdapter!!.itemCount, mAdapter!!.itemCount)
                 Constants.SORT_BY_DURATION_DESC -> subtitle = r.getQuantityString(R.plurals.recycler_subtitle_duration_desc,
                         mAdapter!!.itemCount, mAdapter!!.itemCount)
-                else -> subtitle = r.getString(R.string.goof_up)
+                else                            -> subtitle = r.getString(R.string.goof_up)
             }
         }
 
@@ -333,7 +341,7 @@ class RunRecyclerListFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         when (item!!.itemId) {
-            R.id.recycler_menu_item_units -> {
+            R.id.recycler_menu_item_units        -> {
                 /*Changed shared prefs value for measurement system and force adapter to redraw all
                  *items in the RecyclerView.
                  */
@@ -344,22 +352,22 @@ class RunRecyclerListFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor
                 activity!!.invalidateOptionsMenu()
                 return true
             }
-            R.id.menu_item_new_run -> {
+            R.id.menu_item_new_run               -> {
                 RunManager.insertRun()
                 return true
             }
         /*Change the sort order of the RecyclerView and the Activity subtitle to match based
              *upon the menuItem selected.
              */
-            R.id.menu_item_sort_by_date_asc -> {
+            R.id.menu_item_sort_by_date_asc      -> {
                 changeSortOrder(Constants.SORT_BY_DATE_ASC)
                 return true
             }
-            R.id.menu_item_sort_by_date_desc -> {
+            R.id.menu_item_sort_by_date_desc     -> {
                 changeSortOrder(Constants.SORT_BY_DATE_DESC)
                 return true
             }
-            R.id.menu_item_sort_by_distance_asc -> {
+            R.id.menu_item_sort_by_distance_asc  -> {
                 changeSortOrder(Constants.SORT_BY_DISTANCE_ASC)
                 return true
             }
@@ -367,7 +375,7 @@ class RunRecyclerListFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor
                 changeSortOrder(Constants.SORT_BY_DISTANCE_DESC)
                 return true
             }
-            R.id.menu_item_sort_by_duration_asc -> {
+            R.id.menu_item_sort_by_duration_asc  -> {
                 changeSortOrder(Constants.SORT_BY_DURATION_ASC)
                 return true
             }
@@ -375,7 +383,7 @@ class RunRecyclerListFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor
                 changeSortOrder(Constants.SORT_BY_DURATION_DESC)
                 return true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else                                 -> return super.onOptionsItemSelected(item)
         }
     }
 
@@ -624,7 +632,7 @@ class RunRecyclerListFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor
                 val actionAttempted = intent
                         .getStringExtra(Constants.ACTION_ATTEMPTED)
                 when (actionAttempted) {
-                    Constants.ACTION_INSERT_RUN -> {
+                    Constants.ACTION_INSERT_RUN         -> {
                         /*Now that the Runnable task has gotten the new Run inserted into the Run
                          *table of the database, we have a RunId assigned to it that can be used to
                          *start the RunPagerActivity with the new Run's CombinedFragment as the
@@ -645,7 +653,7 @@ class RunRecyclerListFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor
                                     .show()
                         }
                     }
-                    Constants.ACTION_INSERT_LOCATION -> {
+                    Constants.ACTION_INSERT_LOCATION    -> {
                         //Results of location insertions are reported only if there's an error.
                         val resultString = intent.getStringExtra(Constants.EXTENDED_RESULTS_DATA)
                         Toast.makeText(getContext(), resultString, Toast.LENGTH_LONG).show()

@@ -1,10 +1,11 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import com.dknutsonlaw.android.runtracker2kotlin.R
 
 /**
  * Created by dck on 10/27/15. This RecyclerView decorator draws a simple, two-pixel wide line

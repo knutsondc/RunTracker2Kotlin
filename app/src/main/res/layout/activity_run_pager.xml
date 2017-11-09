@@ -3,5 +3,5 @@
                 android:id="@+id/activity_run_pager_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="com.dknutsonlaw.android.runtracker2kotlin.RunPagerActivity">
+                tools:context="com.dknutsonlaw.android.runtracker2kotlin.ui.RunPagerActivity">
 </android.support.v4.view.ViewPager>

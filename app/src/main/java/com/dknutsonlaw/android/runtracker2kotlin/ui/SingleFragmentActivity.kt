@@ -1,8 +1,9 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import com.dknutsonlaw.android.runtracker2kotlin.R
 
 /**
  * Created by dck on 9/6/15.

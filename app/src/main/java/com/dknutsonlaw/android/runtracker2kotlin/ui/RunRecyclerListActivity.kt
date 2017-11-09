@@ -1,7 +1,9 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 import android.support.v4.app.Fragment
 import android.util.Log
+import com.dknutsonlaw.android.runtracker2kotlin.Constants
+import com.dknutsonlaw.android.runtracker2kotlin.R
 
 /**
  * Created by dck on 10/28/15. Activity to host a Fragment displaying a RecyclerView displaying all

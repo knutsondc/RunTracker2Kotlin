@@ -1,10 +1,12 @@
-package com.dknutsonlaw.android.runtracker2kotlin
+package com.dknutsonlaw.android.runtracker2kotlin.ui
 
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
+import com.dknutsonlaw.android.runtracker2kotlin.Constants
+import com.dknutsonlaw.android.runtracker2kotlin.R
 
 /**
  * Created by dck on 11/9/16. A simple AlertDialog asking the user to confirm deletion of a Run or Runs.
