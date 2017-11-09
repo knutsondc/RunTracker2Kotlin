@@ -93,7 +93,6 @@ class CombinedFragment : Fragment() {
     private var mDurationTextView: TextView? = null
     private var mDistanceCoveredTextView: TextView? = null
     private var mService: BackgroundLocationService? = null
-    private var mLoaderManager: LoaderManager? = null
     //private val mBroadcastManager : LocalBroadcastManager? = null
     //We load two data objects in this Fragment, the Run and a list of its locations, so we set up a
     //loader for a cursor of each of them so that the loading takes place on a different thread.
@@ -239,12 +238,11 @@ class CombinedFragment : Fragment() {
          *earlier, we'll get runtime errors complaining that we're trying
          *to start loaders that have already been started and to stop loaders
          *that have already been stopped.*/
-        mLoaderManager = loaderManager
         val args = Bundle()
         args.putLong(Constants.ARG_RUN_ID, mRunId)
         //Start the loaders for the run and the last location
-        mLoaderManager!!.initLoader(Constants.LOAD_RUN, args, mRunCursorLoaderCallbacks)
-        mLoaderManager!!.initLoader(Constants.LOAD_LOCATION, args, mLocationListCursorCallbacks)
+        loaderManager.initLoader(Constants.LOAD_RUN, args, mRunCursorLoaderCallbacks)
+        loaderManager.initLoader(Constants.LOAD_LOCATION, args, mLocationListCursorCallbacks)
         /*Following is needed when the Activity is destroyed and recreated so that the Fragment
          *in the foreground will have a Run in mRun and thereby present the user with location
          *updates
@@ -935,8 +933,8 @@ class CombinedFragment : Fragment() {
         if (args != null) {
             val runId = args.getLong(Constants.ARG_RUN_ID, -1)
             if (runId != -1L) {
-                mLoaderManager!!.restartLoader(Constants.LOAD_LOCATION, args, LocationListCursorCallbacks())
-                mLoaderManager!!.restartLoader(Constants.LOAD_RUN, args, RunCursorLoaderCallbacks())
+                loaderManager.restartLoader(Constants.LOAD_LOCATION, args, LocationListCursorCallbacks())
+                loaderManager.restartLoader(Constants.LOAD_RUN, args, RunCursorLoaderCallbacks())
             }
         }
     }
