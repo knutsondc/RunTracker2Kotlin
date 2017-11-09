@@ -1324,30 +1324,30 @@ class CombinedFragment : Fragment() {
 
         override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor?) {
             Log.i(TAG, "Called  onLoadFinished() for Run Loader")
-            if (cursor != null) {
-                var run: Run? = null
-                if (cursor.moveToFirst()) {
-                    if (!cursor.isAfterLast) {
-                        run = RunDatabaseHelper.getRun(cursor)
-                        Log.i(TAG, "Run returned by RunCursor null?" + (run  == null))
-                         Log.i(TAG, "Run returned b RunCursor is #" + run?.id.toString())
-                    } else {
-                        Log.i(TAG, "In RunCursorLoaderCallbacks, cursor went past last position")
-                    }
-                } else {
-                    Log.i(TAG, "Couldn't move RunCursor to First Position in onLoadFinished")
-                }
-                if (run != null) {
-                    mRun = run
-                    mRunId = mRun!!.id
-                    //Now that we know the RunLoader has given us a valid Run, update the UI.
-                    updateUI()
-                } else {
-                    Log.i(TAG, "Run returned by RunCursor was null: " + mRunId)
-                }
-            } else {
-                Log.i(TAG, "Cursor returned by RunCursorLoader was null")
+            if (cursor == null) {
+                Log.w(TAG, "Cursor returned by RunCursorLoader was null")
+                return
+            } else if (!cursor.moveToFirst()) {
+                Log.i(TAG, "Couldn't move RunCursor to First Position in onLoadFinished")
+                return
+            } else if (cursor.isAfterLast) {
+                Log.i(TAG, "In RunCursorLoaderCallbacks, cursor went past last position")
+                return
             }
+
+            val run = RunDatabaseHelper.getRun(cursor)
+            Log.i(TAG, "Run returned by RunCursor null?" + (run  == null))
+            Log.i(TAG, "Run returned b RunCursor is #${run?.id}")
+
+            if (run == null) {
+                Log.i(TAG, "Run returned by RunCursor was null: " + mRunId)
+                return
+            }
+
+            mRun = run
+            mRunId = run.id
+            //Now that we know the RunLoader has given us a valid Run, update the UI.
+            updateUI()
         }
 
         override fun onLoaderReset(loader: Loader<Cursor>) {
