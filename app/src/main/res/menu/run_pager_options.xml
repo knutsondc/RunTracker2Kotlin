@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu   xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/settings_menu"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/run_map_pager_activity_units"
+                android:title="@string/imperial"/>
+            <item
+                android:id="@+id/run_map_pager_activity_scroll"
+                android:title="@string/map_scrolling_on"/>
+        </menu>
+    </item>
+    <item android:id="@+id/run_map_pager_menu_item_new_run"
+          android:icon="@android:drawable/ic_menu_add"
+          android:title="@string/new_run"
+          app:showAsAction="ifRoom"/>
+    <item android:id="@+id/menu_item_map_pager_delete_run"
+          android:icon="@android:drawable/ic_menu_delete"
+          android:title="@string/delete_run"
+          app:showAsAction="ifRoom"/>
+    <item android:id="@+id/run_map_pager_menu_item_sort_runs"
+          android:icon="@android:drawable/ic_menu_sort_by_size"
+          android:title="@string/sort"
+          app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:title="@string/by_date_asc"
+                android:id="@+id/run_map_pager_menu_item_sort_by_date_asc"/>
+            <item
+                android:title="@string/by_date_desc"
+                android:id="@+id/run_map_pager_menu_item_sort_by_date_desc"/>
+            <item
+                android:title="@string/by_distance_asc"
+                android:id="@+id/run_map_pager_menu_item_sort_by_distance_asc"/>
+            <item
+                android:title="@string/by_distance_desc"
+                android:id="@+id/run_map_pager_menu_item_sort_by_distance_desc"/>
+            <item
+                android:title="@string/by_duration_asc"
+                android:id="@+id/run_map_pager_menu_item_sort_by_duration_asc"/>
+            <item
+                android:title="@string/by_duration_desc"
+                android:id="@+id/run_map_pager_menu_item_sort_by_duration_desc"/>
+        </menu>
+    </item>
+    <item android:title="@string/map_view"
+          app:showAsAction="ifRoom|withText">
+        <menu>
+            <item
+                android:title="@string/show_entire_route"
+                android:id="@+id/show_entire_route_menu_item"/>
+            <item
+                android:title="@string/track_end_point"
+                android:id="@+id/track_end_point_menu_item"/>
+            <item
+                android:title="@string/track_start_point"
+                android:id="@+id/track_start_point_menu_item"/>
+            <item
+                android:title="@string/tracking_off"
+                android:id="@+id/tracking_off_menu_item"/>
+        </menu>
+    </item>
+</menu>
